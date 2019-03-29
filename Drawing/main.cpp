@@ -1,5 +1,8 @@
 //================================================
-// YOUR NAME GOES HERE <-----------------  
+// Daniel Maher
+// Assignment 6 - Drawing Program
+// Harbert
+// 3-29-19
 //================================================
 #include <iostream>
 #include <fstream>
@@ -10,10 +13,6 @@ using namespace std;
 #include "SettingsUI.h"
 #include "DrawingUI.h"
 using namespace sf;
-
-// Finish this code. Other than where it has comments telling you to 
-// add code, you shouldn't need to add any logic to main to satisfy
-// the requirements of this programming assignment
 
 int main()
 {
@@ -28,8 +27,15 @@ int main()
 	ShapeMgr    shapeMgr;
 	DrawingUI   drawingUI(Vector2f(200, 50));
 	
-	// ********* Add code here to make the managers read from shapes file (if the file exists)
-
+	fstream inFile;
+	inFile.open("shapes.bin", ios::in | ios::binary);
+	if (inFile)
+	{
+		settingsMgr.readFromFile(inFile);
+		shapeMgr.readFromFile(inFile);
+	}
+	inFile.close();
+		
 	while (window.isOpen()) 
 	{
 		Event event;
@@ -38,7 +44,12 @@ int main()
 			if (event.type == Event::Closed)
 			{
 				window.close();
-				// ****** Add code here to write all data to shapes file
+
+				fstream outFile;
+				outFile.open("shapes.bin", ios::out | ios::binary);
+				settingsMgr.writeToFile(outFile);
+				shapeMgr.writeToFile(outFile);
+				outFile.close();
 			}
 			else if (event.type == Event::MouseButtonReleased)
 			{
